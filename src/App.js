@@ -9,9 +9,10 @@ function App() {
   const [initialTime, setInitialTime] = useState(new Date())
   const [time, setTime] = useState(0)
   const [round, setRound] = useState(0)
+  const [timeRunning, setTimeRunning] = useState(true)
+  const [finishedTime, setFinishedTime] = useState(0)
 
   let allWords = []
-  let timeRunning = true
 
   function createErroredWord(word, consonants, vowels) {
     const ORIGINAL_WORD = word
@@ -62,7 +63,8 @@ function App() {
     if (round === 10) {
       setTime(new Date() - initialTime)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      timeRunning = false
+      setTimeRunning(false)
+      setFinishedTime(time)
       return
     }
     fetch('https://random-word-api.herokuapp.com/word?number=8')
@@ -110,22 +112,37 @@ function App() {
   return (
     <>
       <link rel="manifest" href="/manifest.json" />
-      <h2 className="Title">
-        Time: {time}s, Round: {round}
-      </h2>
-      <div className={`Words ${erroredWord === null ? 'Shrink' : ''}`}>
-        {words.map((word) => (
-          <Word
-            key={word}
-            word={word}
-            erroredWord={erroredWord === word}
-            originalWord={originalWord}
-            nextWord={nextWord}
-            disabled={disabled}
-            setDisabled={setDisabled}
-          />
-        ))}
-      </div>
+      {timeRunning ? (
+        <>
+          <h2 className="Title">
+            Time: {time}s, Round: {round}
+          </h2>
+          <div className={`Words ${erroredWord === null ? 'Shrink' : ''}`}>
+            {words.map((word) => (
+              <Word
+                key={word}
+                word={word}
+                erroredWord={erroredWord === word}
+                originalWord={originalWord}
+                nextWord={nextWord}
+                disabled={disabled}
+                setDisabled={setDisabled}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div>
+          <h2 className="Title">You finished in {finishedTime}s</h2>
+          <button
+            className="Word"
+            style={{ backgroundColor: 'green' }}
+            onClick={() => window.location.reload()}
+          >
+            Play again
+          </button>
+        </div>
+      )}
     </>
   )
 }
