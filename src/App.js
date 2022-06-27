@@ -8,8 +8,10 @@ function App() {
   const [disabled, setDisabled] = useState(false)
   const [initialTime, setInitialTime] = useState(new Date())
   const [time, setTime] = useState(0)
+  const [round, setRound] = useState(0)
 
   let allWords = []
+  let timeRunning = true
 
   function createErroredWord(word, consonants, vowels) {
     const ORIGINAL_WORD = word
@@ -57,8 +59,13 @@ function App() {
   function nextWord() {
     setErroredWord(null)
     setOriginalWord(null)
-    // setWords([])
-    fetch('https://random-word-api.herokuapp.com/word?number=10')
+    if (round === 10) {
+      setTime(new Date() - initialTime)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      timeRunning = false
+      return
+    }
+    fetch('https://random-word-api.herokuapp.com/word?number=8')
       .then((res) => res.json())
       .then((data) => {
         const vowels = new Set(['a', 'e', 'i', 'o', 'u'])
@@ -77,6 +84,7 @@ function App() {
         setErroredWord(erroredWord)
         setDisabled(false)
         setWords(words)
+        setRound((round) => round + 1)
       })
   }
 
@@ -86,8 +94,10 @@ function App() {
   useEffect(() => {
     setInitialTime(new Date())
     setInterval(() => {
-      let temp = Math.round((new Date() - initialTime) / 100) / 10
-      setTime(Number.isInteger(temp) ? `${temp}.0` : temp)
+      if (timeRunning) {
+        let temp = Math.round((new Date() - initialTime) / 100) / 10
+        setTime(Number.isInteger(temp) ? `${temp}.0` : temp)
+      }
     }, 100)
     fetch('https://random-word-api.herokuapp.com/all')
       .then((res) => res.json())
@@ -100,7 +110,9 @@ function App() {
   return (
     <>
       <link rel="manifest" href="/manifest.json" />
-      <h2 className="Title">Time: {time}s, Round: 10</h2>
+      <h2 className="Title">
+        Time: {time}s, Round: {round}
+      </h2>
       <div className={`Words ${erroredWord === null ? 'Shrink' : ''}`}>
         {words.map((word) => (
           <Word
