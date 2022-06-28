@@ -73,7 +73,7 @@ function App() {
       setFinishedTime(time)
       return
     }
-    fetch('https://random-word-api.herokuapp.com/word?number=8')
+    fetch('https://random-words-api.herokuapp.com/w?n=8')
       .then((res) => res.json())
       .then((data) => {
         const vowels = new Set(['a', 'e', 'i', 'o', 'u'])
@@ -110,7 +110,7 @@ function App() {
       let temp = Math.round((new Date() - initialTime) / 100) / 10
       setTime(Number.isInteger(temp) ? `${temp}.0` : temp)
     }, 100)
-    // fetch('https://random-word-api.herokuapp.com/all')
+    // fetch('https://random-words-api.herokuapp.com/')
     //   .then((res) => res.json())
     //   .then((data) => (allWords = data))
     // eslint-disable-next-line react-hooks/exhaustive-deps
