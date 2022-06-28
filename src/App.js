@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Word from './components/Word'
 
 function App() {
@@ -96,10 +98,8 @@ function App() {
   useEffect(() => {
     setInitialTime(new Date())
     setInterval(() => {
-      if (timeRunning) {
-        let temp = Math.round((new Date() - initialTime) / 100) / 10
-        setTime(Number.isInteger(temp) ? `${temp}.0` : temp)
-      }
+      let temp = Math.round((new Date() - initialTime) / 100) / 10
+      setTime(Number.isInteger(temp) ? `${temp}.0` : temp)
     }, 100)
     fetch('https://random-word-api.herokuapp.com/all')
       .then((res) => res.json())
@@ -111,9 +111,9 @@ function App() {
 
   return (
     <>
-      <link rel="manifest" href="/manifest.json" />
       {timeRunning ? (
         <>
+          <ToastContainer />
           <h2 className="Title">
             Time: {time}s, Round: {round}
           </h2>
@@ -135,7 +135,7 @@ function App() {
         <div>
           <h2 className="Title">You finished in {finishedTime}s</h2>
           <button
-            className="Word"
+            className="Button"
             style={{ backgroundColor: 'green' }}
             onClick={() => window.location.reload()}
           >

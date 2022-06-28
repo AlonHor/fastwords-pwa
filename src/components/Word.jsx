@@ -24,7 +24,7 @@ function Word({
   return (
     <button
       onClick={pickWord}
-      className="Word"
+      className="Button"
       style={{
         backgroundColor: reveal ? (erroredWord ? 'green' : '#f00') : 'gray',
       }}
