@@ -26,7 +26,7 @@ function Word({
       onClick={pickWord}
       className="Button"
       style={{
-        backgroundColor: reveal ? (erroredWord ? 'green' : '#f00') : 'gray',
+        backgroundColor: reveal && (erroredWord ? 'green' : '#f00'),
       }}
       disabled={disabled}
     >

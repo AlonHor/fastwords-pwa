@@ -14,7 +14,7 @@ function App() {
   const [timeRunning, setTimeRunning] = useState(true)
   const [finishedTime, setFinishedTime] = useState(0)
 
-  let allWords = []
+  // let allWords = []
 
   function createErroredWord(word, consonants, vowels) {
     const ORIGINAL_WORD = word
@@ -52,7 +52,7 @@ function App() {
       break
     }
     if (i === 10) return null
-    else if (allWords.includes(word)) return null
+    // else if (allWords.includes(word)) return null
     else {
       setOriginalWord(ORIGINAL_WORD)
       return word
@@ -101,10 +101,10 @@ function App() {
       let temp = Math.round((new Date() - initialTime) / 100) / 10
       setTime(Number.isInteger(temp) ? `${temp}.0` : temp)
     }, 100)
-    fetch('https://random-word-api.herokuapp.com/all')
-      .then((res) => res.json())
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      .then((data) => (allWords = data))
+    // fetch('https://random-word-api.herokuapp.com/all')
+    //   .then((res) => res.json())
+    //   .then((data) => (allWords = data))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   window.onselectstart = (e) => e.preventDefault()
