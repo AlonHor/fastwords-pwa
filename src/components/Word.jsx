@@ -7,6 +7,7 @@ function Word({
   nextWord,
   disabled,
   setDisabled,
+  correct,
 }) {
   const [reveal, setReveal] = useState(false)
 
@@ -15,6 +16,7 @@ function Word({
       e.preventDefault()
       setReveal(true)
       setDisabled(true)
+      erroredWord && correct()
       setTimeout(() => {
         setReveal(false)
         erroredWord ? nextWord() : setDisabled(false)

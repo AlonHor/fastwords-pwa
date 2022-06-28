@@ -26,6 +26,10 @@ function App() {
         i++
         continue
       }
+      if (word[candidateForReplacement1] === word[candidateForReplacement2]) {
+        i++
+        continue
+      }
       if (
         vowels.has(word[candidateForReplacement1]) &&
         consonants.has(word[candidateForReplacement2])
@@ -92,6 +96,11 @@ function App() {
       })
   }
 
+  function correct() {
+    var correctAudio = new Audio('correct.mp3')
+    correctAudio.play()
+  }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(nextWord, [])
 
@@ -111,9 +120,9 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       {timeRunning ? (
         <>
-          <ToastContainer />
           <h2 className="Title">
             Time: {time}s, Round: {round}
           </h2>
@@ -127,6 +136,7 @@ function App() {
                 nextWord={nextWord}
                 disabled={disabled}
                 setDisabled={setDisabled}
+                correct={correct}
               />
             ))}
           </div>
