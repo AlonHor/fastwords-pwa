@@ -14,11 +14,21 @@ body {
   margin: 0.5rem;
   display: flex;
   background-color: #424242;
-  transition: background-color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   border-radius: 0.5rem;
   border: none;
   color: white;
   cursor: pointer;
+}
+
+.Button:hover {
+  background-color: #616161;
+  transform: translateY(-0.1rem);
+}
+
+.Button:active {
+  background-color: #212121;
+  transform: translateY(0.3rem);
 }
 
 .Words {
