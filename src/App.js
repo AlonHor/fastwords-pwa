@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Word from './components/Word'
-import importedEasyWords from './data/easy-words.txt'
+// import importedEasyWords from './data/easy-words.txt'
 
 function App() {
   const [words, setWords] = useState([])
@@ -130,9 +130,33 @@ function App() {
   useEffect(startGame, [])
 
   async function fetchEasyWords() {
-    const res = await fetch(importedEasyWords)
-    const text = await res.text()
-    allEasyWords = text.split('\r\n')
+    // const res = await fetch(importedEasyWords)
+    // const text = await res.text()
+    allEasyWords = [
+      'search',
+      'other',
+      'which',
+      'their',
+      'there',
+      'contact',
+      'business',
+      'online',
+      'first',
+      'would',
+      'services',
+      'these',
+      'click',
+      'service',
+      'price',
+      'people',
+      'state',
+      'email',
+      'health',
+      'world',
+      'products',
+      'music',
+    ]
+    // allEasyWords = text.split('\r\n')
   }
 
   function startGame() {
