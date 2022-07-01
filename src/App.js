@@ -130,42 +130,50 @@ function App() {
   useEffect(startGame, [])
 
   async function fetchEasyWords() {
-    const res = await fetch('easy-words.txt')
-    const text = await res.text()
-    return (allEasyWords = text.split('\r\n'))
+    // const res = await fetch(importedEasyWords)
+    // const text = await res.text()
+    allEasyWords = [
+      'search',
+      'other',
+      'which',
+      'their',
+      'there',
+      'contact',
+      'business',
+      'online',
+      'first',
+      'would',
+      'services',
+      'these',
+      'click',
+      'service',
+      'price',
+      'people',
+      'state',
+      'email',
+      'health',
+      'world',
+      'products',
+      'music',
+      'should',
+      'product',
+      'system',
+      'rights',
+      'support',
+      'online',
+      'community',
+      'company',
+      'addresses',
+      'education',
+      'institute',
+      'network',
+      'states',
+      'countries',
+      'address',
+      'networks',
+    ]
+    // allEasyWords = text.split('\r\n')
   }
-
-  // let fetchEasyWords = new Promise((resolve, reject) => {
-  // })
-
-  // async function fetchEasyWords() {
-
-  // allEasyWords = [
-  //   'search',
-  //   'other',
-  //   'which',
-  //   'their',
-  //   'there',
-  //   'contact',
-  //   'business',
-  //   'online',
-  //   'first',
-  //   'would',
-  //   'services',
-  //   'these',
-  //   'click',
-  //   'service',
-  //   'price',
-  //   'people',
-  //   'state',
-  //   'email',
-  //   'health',
-  //   'world',
-  //   'products',
-  //   'music',
-  // ]
-  // allEasyWords = text.split('\r\n')
-  // }
 
   function startGame() {
     nextRound()
