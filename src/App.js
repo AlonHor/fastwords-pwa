@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Word from './components/Word'
-import importedEasyWords from './data/easy-words.txt'
 
 function App() {
   const [words, setWords] = useState([])
@@ -12,11 +11,10 @@ function App() {
   const [initialTime, setInitialTime] = useState(new Date())
   const [time, setTime] = useState(0)
   const [round, setRound] = useState(0)
-  const [timeRunning, setTimeRunning] = useState(false)
+  const [timeRunning, setTimeRunning] = useState(true)
   const [finishedTime, setFinishedTime] = useState(0)
-  const [level, setLevel] = useState('Easy')
 
-  let allEasyWords
+  // let allWords = []
 
   function createErroredWord(word, consonants, vowels) {
     const ORIGINAL_WORD = word
@@ -58,20 +56,14 @@ function App() {
       break
     }
     if (i === 10) return null
-    // else if (allHardWords.includes(word)) return null
-    else if (allEasyWords.includes(word)) return null
+    // else if (allWords.includes(word)) return null
     else {
       setOriginalWord(ORIGINAL_WORD)
       return word
     }
   }
 
-  function nextRound() {
-    fetchEasyWords().finally(createRandomWords)
-  }
-
-  function createRandomWords() {
-    fetchEasyWords()
+  function nextWord() {
     setErroredWord(null)
     setOriginalWord(null)
     if (round === 10) {
@@ -81,45 +73,27 @@ function App() {
       setFinishedTime(time)
       return
     }
-
-    const randomWords = []
-    while (randomWords.length < 8) {
-      let randomWord =
-        allEasyWords[Math.floor(Math.random() * allEasyWords.length)]
-      if (round <= 3) {
-        setLevel('Easy')
-        if (randomWord.length > 5) continue // easy
-      }
-      if (round === 4 || round === 5) {
-        // round 5 to 6
-        setLevel('Medium')
-        if (randomWord.length < 6 || randomWord.length > 7) continue // medium
-      }
-      if (round >= 6) {
-        // round 7 to 10
-        setLevel('Hard')
-        if (randomWord.length < 7) continue // hard
-      }
-      if (randomWords.includes(randomWord)) continue
-      randomWords.push(randomWord)
-    }
-
-    const vowels = new Set(['a', 'e', 'i', 'o', 'u'])
-    const consonants = new Set(
-      'bcdfghjklmnpqrstvwxyz'.split('').filter((c) => !vowels.has(c))
-    )
-    let erroredWord
-    let wordInListOfWordsIndex
-    do {
-      wordInListOfWordsIndex = Math.floor(Math.random() * randomWords.length)
-      let word = randomWords[wordInListOfWordsIndex]
-      erroredWord = createErroredWord(word, consonants, vowels)
-    } while (erroredWord === null)
-    randomWords[wordInListOfWordsIndex] = erroredWord
-    setErroredWord(erroredWord)
-    setDisabled(false)
-    setWords(randomWords)
-    setRound((round) => round + 1)
+    fetch('https://random-words-api.herokuapp.com/w?n=8')
+      .then((res) => res.json())
+      .then((data) => {
+        const vowels = new Set(['a', 'e', 'i', 'o', 'u'])
+        const consonants = new Set(
+          'bcdfghjklmnpqrstvwxyz'.split('').filter((c) => !vowels.has(c))
+        )
+        let words = data
+        let erroredWord
+        let wordInListOfWordsIndex
+        do {
+          wordInListOfWordsIndex = Math.floor(Math.random() * words.length)
+          let word = words[wordInListOfWordsIndex]
+          erroredWord = createErroredWord(word, consonants, vowels)
+        } while (erroredWord === null)
+        words[wordInListOfWordsIndex] = erroredWord
+        setErroredWord(erroredWord)
+        setDisabled(false)
+        setWords(words)
+        setRound((round) => round + 1)
+      })
   }
 
   function correct() {
@@ -128,23 +102,19 @@ function App() {
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(startGame, [])
+  useEffect(nextWord, [])
 
-  async function fetchEasyWords() {
-    const res = await fetch(importedEasyWords)
-    const text = await res.text()
-    allEasyWords = text.split('\r\n')
-  }
-
-  function startGame() {
-    nextRound()
-    setTimeRunning(true)
+  useEffect(() => {
     setInitialTime(new Date())
     setInterval(() => {
       let temp = Math.round((new Date() - initialTime) / 100) / 10
       setTime(Number.isInteger(temp) ? `${temp}.0` : temp)
     }, 100)
-  }
+    // fetch('https://random-words-api.herokuapp.com/')
+    //   .then((res) => res.json())
+    //   .then((data) => (allWords = data))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   window.onselectstart = (e) => e.preventDefault()
 
@@ -154,16 +124,16 @@ function App() {
       {timeRunning ? (
         <>
           <h2 className="Title">
-            Time: {time}s, Round: {round} {level}
+            Time: {time}s, Round: {round}
           </h2>
-          <div className="Words">
+          <div className={`Words ${erroredWord === null ? 'Shrink' : ''}`}>
             {words.map((word) => (
               <Word
                 key={word}
                 word={word}
                 erroredWord={erroredWord === word}
                 originalWord={originalWord}
-                nextRound={nextRound}
+                nextWord={nextWord}
                 disabled={disabled}
                 setDisabled={setDisabled}
                 correct={correct}

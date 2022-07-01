@@ -4,7 +4,7 @@ function Word({
   word,
   originalWord,
   erroredWord,
-  nextRound,
+  nextWord,
   disabled,
   setDisabled,
   correct,
@@ -19,7 +19,7 @@ function Word({
       erroredWord && correct()
       setTimeout(() => {
         setReveal(false)
-        erroredWord ? nextRound() : setDisabled(false)
+        erroredWord ? nextWord() : setDisabled(false)
       }, 1000)
     }
   }
