@@ -137,12 +137,6 @@ function App() {
   }
 
   function startGame() {
-    fetchEasyWords().finally(() => {
-      firstRound()
-    })
-  }
-
-  function firstRound() {
     nextRound()
     setTimeRunning(true)
     setInitialTime(new Date())
