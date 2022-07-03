@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Word from './components/Word'
-// import importedEasyWords from './data/easy-words.txt'
 import { allWords } from './data/words'
 
 function App() {
@@ -140,7 +139,7 @@ function App() {
       {timeRunning ? (
         <>
           <h2 className="Title">
-            Time: {time}s, Round: {round} {level}
+            Time: {time}s, Round: {round}, Level: {level}
           </h2>
           <div className="Words">
             {words.map((word) => (
