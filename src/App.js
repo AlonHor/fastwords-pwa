@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Word from './components/Word'
 // import importedEasyWords from './data/easy-words.txt'
+import { allWords } from './data/words'
 
 function App() {
   const [words, setWords] = useState([])
@@ -15,8 +16,6 @@ function App() {
   const [timeRunning, setTimeRunning] = useState(false)
   const [finishedTime, setFinishedTime] = useState(0)
   const [level, setLevel] = useState('Easy')
-
-  let allEasyWords
 
   function createErroredWord(word, consonants, vowels) {
     const ORIGINAL_WORD = word
@@ -58,8 +57,7 @@ function App() {
       break
     }
     if (i === 10) return null
-    // else if (allHardWords.includes(word)) return null
-    else if (allEasyWords.includes(word)) return null
+    else if (allWords.includes(word)) return null
     else {
       setOriginalWord(ORIGINAL_WORD)
       return word
@@ -67,10 +65,6 @@ function App() {
   }
 
   function nextRound() {
-    fetchEasyWords().finally(createRandomWords)
-  }
-
-  function createRandomWords() {
     setErroredWord(null)
     setOriginalWord(null)
     if (round === 10) {
@@ -83,8 +77,7 @@ function App() {
 
     const randomWords = []
     while (randomWords.length < 8) {
-      let randomWord =
-        allEasyWords[Math.floor(Math.random() * allEasyWords.length)]
+      let randomWord = allWords[Math.floor(Math.random() * allWords.length)]
       if (round <= 3) {
         setLevel('Easy')
         if (randomWord.length > 5) continue // easy
@@ -128,52 +121,6 @@ function App() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(startGame, [])
-
-  async function fetchEasyWords() {
-    // const res = await fetch(importedEasyWords)
-    // const text = await res.text()
-    allEasyWords = [
-      'search',
-      'other',
-      'which',
-      'their',
-      'there',
-      'contact',
-      'business',
-      'online',
-      'first',
-      'would',
-      'services',
-      'these',
-      'click',
-      'service',
-      'price',
-      'people',
-      'state',
-      'email',
-      'health',
-      'world',
-      'products',
-      'music',
-      'should',
-      'product',
-      'system',
-      'rights',
-      'support',
-      'online',
-      'community',
-      'company',
-      'addresses',
-      'education',
-      'institute',
-      'network',
-      'states',
-      'countries',
-      'address',
-      'networks',
-    ]
-    // allEasyWords = text.split('\r\n')
-  }
 
   function startGame() {
     nextRound()
