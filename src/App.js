@@ -79,17 +79,15 @@ function App() {
       let randomWord = allWords[Math.floor(Math.random() * allWords.length)]
       if (round <= 3) {
         setLevel('Easy')
-        if (randomWord.length > 5) continue // easy
+        if (randomWord.length > 5) continue
       }
       if (round === 4 || round === 5) {
-        // round 5 to 6
         setLevel('Medium')
-        if (randomWord.length < 6 || randomWord.length > 7) continue // medium
+        if (randomWord.length < 6 || randomWord.length > 7) continue
       }
       if (round >= 6) {
-        // round 7 to 10
         setLevel('Hard')
-        if (randomWord.length < 7) continue // hard
+        if (randomWord.length < 7) continue
       }
       if (randomWords.includes(randomWord)) continue
       randomWords.push(randomWord)
